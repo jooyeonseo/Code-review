@@ -11,29 +11,34 @@ var intNum = 0;
  
  function save(){
 	
-
 	 var list = []; 
+	 var hasN = false;
 	 
 	 for (var i = 0; i < intNum; i++) {
 		 
 		 var order = $(".order_code").text(); // 주문번호	
-		 var scode = $(".sales_code").eq(i).text();	// 수주번호
-		 var pcode = $(".product_code").eq(i).val(); // 상품코드
+		 var scode = $(".sales_code").eq(i).text();		// 수주번호
+		 var pcode = $(".product_code").eq(i).val();		// 상품코드
 		 var salesQuantity = $(".sales_quantity").eq(i).text(); // 주문수량
 		 var processingReg = $(".product-processing").eq(i).val(); // 수주처리 상태 
 		 
 		 if(processingReg == 'N'){ // 수주처리상태 지정하지 않은 상품이 존재하는 경우
-			 alert("수주처리상태 미지정 상품 존재");
-			 $("#mo-close").trigger("click");
-			 return;
-		 }
-	 
-	 
+			 hasN = true;
+			 break;
+			 
+		 }	
+		 
 		 var dto = new SalesDTO(order, scode, pcode, salesQuantity, processingReg);
-		 list.push(dto);
-		 
-		  }
-		 
+		 list.push(dto);		 		 
+	 }
+	 
+	 
+	 if(hasN){ 
+		 alert("수주처리상태 미지정 상품 존재");
+		 $("#mo-close").trigger("click");
+		 return;
+	 }
+	 
 		 $.ajax({
 			  url: "acceptSave",
 			  type: "POST",
@@ -64,10 +69,9 @@ var intNum = 0;
 						});
 			    }
 			});
-
-
-	 }
 	
+	
+ }
 	
 
 
