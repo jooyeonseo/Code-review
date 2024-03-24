@@ -48,9 +48,9 @@ public class SalesServiceImpl implements SalesService {
 		for(SalesDTO dto : list) {
 			
 				
-				// 출고 저장
-				dto.setProduct_status("progressing");	            
-	            // 출고테이블에 등록
+		        // 출고 저장
+			dto.setProduct_status("progressing");	            
+	                // 출고테이블에 등록
 	    		sdao.stockReg(dto);	    		
 	    		// 상태값 변경 (수주처리지시 상태 : 완료)
 	    		sdao.changeProductStatus(dto);
