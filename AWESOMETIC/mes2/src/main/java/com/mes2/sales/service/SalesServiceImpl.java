@@ -42,7 +42,7 @@ public class SalesServiceImpl implements SalesService {
 		
 		// 주문건에 대한 처리지시 상태 변경 (완료)	
 		SalesDTO sdt = list.get(0); 
-        String orderCode = sdt.getOrder_code(); 
+                String orderCode = sdt.getOrder_code(); 
 		sdao.updateInstruction(orderCode); // 주문건에 대한 수주 처리 상태 업로드 
 		
 		for(SalesDTO dto : list) {
