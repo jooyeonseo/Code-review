@@ -32,7 +32,7 @@ var intNum = 0;
 		 var dto = new SalesDTO(order, scode, pcode, salesQuantity, processingReg);
 		 list.push(dto);
 		 
-		 
+		  }
 		 
 		 $.ajax({
 			  url: "acceptSave",
@@ -69,7 +69,7 @@ var intNum = 0;
 	 }
 	
 	
- }
+
 
  
   function content(data, order_code){ 
