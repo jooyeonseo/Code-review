@@ -62,7 +62,7 @@ public class SalesServiceImpl implements SalesService {
 		            sdao.productInst(dto); //부족한만큼 생산지시
 		         
 		        } else if ("multi".equals(dto.getProcessing_reg())) {	
-		        	// 재고수량 < 주문수량 : 재고수량만큼은 출고준비 나머지는 생산후 출고준비   
+		        	// 재고수량 < 주문수량 : 부족수량만큼 생산준비
 		            int stock_quantity = stockQuantity(dto).getStock_quantity(); // 재고수량 가져오기
 		            int lack_quantity = (dto.getSales_quantity() - stock_quantity); // 부족수량 계산 (주문수량 - 재고수량)
 		            dto.setLack_quantity(lack_quantity);
