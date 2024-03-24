@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.mes2.mapper.SalesMapper">
+  
+  <resultMap id="SalesDTO" type="com.mes2.sales.domain.SalesDTO">
+  	<result property="order_code" column="order_code"/>
+  	<result property="company_name" column="company_name"/> 
+  	<result property="product_name" column="name"/>
+  	<result property="order_date" column="order_date"/>
+  	<result property="request_date" column="request_date"/> 
+  	<result property="product_code" column="product_code"/>
+  	<result property="sales_quantity" column="sales_quantity"/>
+  	<result property="user_id" column="user_id"/>
+  	<result property="sales_code" column="sales_code"/>
+  	<result property="product_status" column="product_status"/>
+  	<result property="processing_reg" column="processing_reg"/>
+  	<result property="stock_quantity" column="stock_quantity"/>
+  	<result property="orderStatus" column="orderStatus"/>
+  </resultMap>
+  
+  
+  <resultMap id="AcceptSaveDTO" type="com.mes2.sales.domain.AcceptSaveDTO">
+  	<result property="order_code" column="order_code"/>
+  	<result property="company_name" column="name"/> 
+  	<result property="company_code" column="company_code"/> 
+  	<result property="company_address" column="address"/> 
+  	<result property="company_call" column="call"/>
+  	<result property="request_date" column="request_date"/> 
+  	<result property="user_id" column="user_id"/> 
+  	<result property="user_name" column="user_name"/>
+  	<result property="user_department" column="user_department"/>
+  	<result property="user_position" column="user_position"/>
+  	<result property="user_auth" column="user_auth"/>
+  	<result property="instructions" column="instructions"/>
+  </resultMap>
+  
+
+    
+    <!-- 수주처리 완료상태 변경 -->
+     <update id="updateInstruction">
+		 update sales_order_info 
+		 set instructions = 'Y' 
+		 where order_code =#{order_code} 
+	 </update>
+	 
+	 <!-- 출고등록(지시) -->
+	   <insert id="stockReg">
+		  insert into out_warehouse 
+		  (quantity,product_code,out_type,based_code,status) 
+		  values (#{sales_quantity}, #{product_code}, 'S', #{order_code},'waiting')
+	  </insert>
+	  
+	  <!-- 수주처리상태 변경 (진행) -->
+	  <update id='changeProductStatus'>
+		  update sales_order_product 
+		  set product_status = #{product_status}, 
+		  processing_reg = #{processing_reg} 
+		  where sales_code =#{sales_code} 
+	  </update>
+	  
+	  <!-- 생산지시 -->
+	  <insert id="productInst">
+		  insert into instructions 
+		  (sop_code, sales_quantity, mdp_code, state, type) 
+		  values 
+		  (#{sales_code},#{lack_quantity},#{product_code},'requested', 'O') 
+	  </insert>
+    
+    <!-- 재고구하기 -->
+    <select id="getStockQuantity"  resultMap="SalesDTO">
+	select  
+    (select IFNULL(SUM(quantity),0 )from  stock where product_code = #{product_code}) -
+    (select IFNULL(SUM(quantity),0) from out_warehouse where product_code = #{product_code} AND status = 'waiting') AS stock_quantity,
+    name, 
+    product_code 
+    from meta_data_product 
+    where product_code = #{product_code} 
+    </select>
+    
+
+  
+
+
+  </mapper>
