@@ -17,8 +17,8 @@ var intNum = 0;
 	 for (var i = 0; i < intNum; i++) {
 		 
 		 var order = $(".order_code").text(); // 주문번호	
-		 var scode = $(".sales_code").eq(i).text();		// 수주번호
-		 var pcode = $(".product_code").eq(i).val();		// 상품코드
+		 var scode = $(".sales_code").eq(i).text(); // 수주번호
+		 var pcode = $(".product_code").eq(i).val(); // 상품코드
 		 var salesQuantity = $(".sales_quantity").eq(i).text(); // 주문수량
 		 var processingReg = $(".product-processing").eq(i).val(); // 수주처리 상태 
 		 
